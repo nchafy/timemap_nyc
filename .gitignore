@@ -1,0 +1,36 @@
+# Personal data — never commit (Takeout exports, saved places)
+data/
+
+# Transit + map data (large, downloadable via scripts)
+*.osm.pbf
+gtfs/
+otp-data/
+*.zip
+graph.obj
+*.tif
+*.tiff
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+.claude/settings.local.json
