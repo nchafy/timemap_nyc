@@ -35,3 +35,7 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PTH", "RET", "A
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["ARG"]
 "scripts/**" = ["ARG", "PTH", "T201"]
+# TakeoutError is the suffixed base class; the subclasses read as the condition
+# they describe ("raise SourceFileUnreadable(path, ...)"), which is clearer at
+# the call site than SourceFileUnreadableError.
+"src/timemap/places/errors.py" = ["N818"]
