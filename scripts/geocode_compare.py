@@ -270,7 +270,7 @@ def run(provider: str) -> None:
 def compare() -> None:
     places = {p["key"]: p for p in json.loads(CANDIDATES.read_text(encoding="utf-8"))}
     results = load_results()
-    names = [p for p in PROVIDERS if p in results and results[p]]
+    names = [p for p in PROVIDERS if results.get(p)]
     if not names:
         print("no results yet")
         return
@@ -308,9 +308,7 @@ def compare() -> None:
             close = sum(1 for d in ds if d < 100)
             mid = sum(1 for d in ds if d < 500)
             far = sum(1 for d in ds if d > 2000)
-            print(
-                f"{a[:10]}/{b[:10]:<13} {len(ds):>4} {close:>7} {mid:>7} {far:>7} {med:>7.0f}m"
-            )
+            print(f"{a[:10]}/{b[:10]:<13} {len(ds):>4} {close:>7} {mid:>7} {far:>7} {med:>7.0f}m")
 
     # Where they disagree most -- these are the cases worth eyeballing.
     if len(names) >= 2:
