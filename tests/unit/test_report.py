@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from timemap.places.models import SavedPlace
-from timemap.places.report import build_report
+from timemap.places.report import build_report, format_summary
 
 
 def place(**kw) -> SavedPlace:
@@ -27,9 +27,7 @@ def place(**kw) -> SavedPlace:
 
 
 def unlocated(key: str, reason: str) -> SavedPlace:
-    return place(
-        identity_key=key, lat=None, lon=None, needs_geocoding=True, geocode_reason=reason
-    )
+    return place(identity_key=key, lat=None, lon=None, needs_geocoding=True, geocode_reason=reason)
 
 
 def test_counts_sum_to_the_total():
@@ -76,3 +74,34 @@ def test_report_is_json_serialisable_and_stable():
 
     r = build_report([place()], [], source_count=1, duplicates_merged=0)
     assert json.dumps(r, sort_keys=True) == json.dumps(r, sort_keys=True)
+
+
+def test_summary_leads_with_the_counts():
+    r = build_report(
+        [place()], [unlocated("b", "no_coordinates")], source_count=2, duplicates_merged=0
+    )
+    first_line = format_summary(r).splitlines()[0]
+    assert "2 places" in first_line
+    assert "1 located" in first_line
+    assert "1 need coordinates" in first_line
+
+
+def test_summary_reports_reason_breakdown():
+    unresolved = [unlocated("a", "no_coordinates"), unlocated("b", "not_a_place")]
+    summary = format_summary(build_report([], unresolved, source_count=2, duplicates_merged=0))
+    assert "1 no_coordinates" in summary
+    assert "1 not_a_place" in summary
+
+
+def test_summary_mentions_merges_and_out_of_region_only_when_present():
+    quiet = format_summary(build_report([place()], [], source_count=1, duplicates_merged=0))
+    assert "merged" not in quiet
+    assert "outside the region" not in quiet
+
+    noisy = format_summary(
+        build_report(
+            [place(identity_key="a", outside_region=True)], [], source_count=3, duplicates_merged=2
+        )
+    )
+    assert "merged 2 duplicate entries" in noisy
+    assert "1 outside the region" in noisy

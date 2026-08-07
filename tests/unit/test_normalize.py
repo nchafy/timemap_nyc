@@ -76,16 +76,14 @@ def test_located_and_unresolved_are_disjoint_and_conserve_input():
 
 
 def test_unresolved_entries_carry_a_reason_code():
-    located, unresolved = normalize([raw(name="No Coords")], region_bbox=NYC_BBOX)
+    _located, unresolved = normalize([raw(name="No Coords")], region_bbox=NYC_BBOX)
     assert unresolved[0].needs_geocoding is True
     assert unresolved[0].geocode_reason
 
 
 def test_out_of_region_place_is_flagged_not_dropped():
     # A Seattle thrift store in an NYC list is still a saved place.
-    located, _ = normalize(
-        [raw(name="Far Away", lat=47.55, lon=-122.04)], region_bbox=NYC_BBOX
-    )
+    located, _ = normalize([raw(name="Far Away", lat=47.55, lon=-122.04)], region_bbox=NYC_BBOX)
     assert len(located) == 1
     assert located[0].outside_region is True
 

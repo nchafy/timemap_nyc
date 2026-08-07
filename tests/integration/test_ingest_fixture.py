@@ -58,7 +58,9 @@ def test_place_saved_in_two_lists_appears_once_with_both(takeout_min, tmp_path):
 
 def test_second_run_is_byte_identical(takeout_min, tmp_path):
     run(takeout_min, tmp_path)
-    first = {n: (tmp_path / n).read_bytes() for n in ("places.geojson", "places.unresolved.geojson")}
+    first = {
+        n: (tmp_path / n).read_bytes() for n in ("places.geojson", "places.unresolved.geojson")
+    }
     run(takeout_min, tmp_path)
     for name, data in first.items():
         assert (tmp_path / name).read_bytes() == data

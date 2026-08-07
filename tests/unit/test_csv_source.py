@@ -53,7 +53,9 @@ def test_header_only_file_yields_no_entries(tmp_path):
 def test_skips_trailing_blank_row(tmp_path):
     # 2 of the owner's 35 real lists end with a fully blank row.
     p = tmp_path / "L.csv"
-    p.write_text("Title,Note,URL,Tags,Comment\nX,,https://example.com/a,,\n,,,,\n", encoding="utf-8")
+    p.write_text(
+        "Title,Note,URL,Tags,Comment\nX,,https://example.com/a,,\n,,,,\n", encoding="utf-8"
+    )
     assert len(parse_csv_list(p)) == 1
 
 

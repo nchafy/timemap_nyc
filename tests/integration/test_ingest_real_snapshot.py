@@ -71,12 +71,23 @@ def test_completes_quickly(ingested):
     assert ingested["elapsed"] < 5.0
 
 
-def test_repository_working_tree_stays_clean(real_takeout_dir, ingested):
-    # SC-010: ingesting real data must never make the repo dirty.
+def test_ingesting_real_data_adds_nothing_to_git(real_takeout_dir, ingested):
+    """SC-010: no personal data becomes committable.
+
+    Asserts that nothing under data/ is visible to git, rather than that the
+    whole tree is clean -- a developer with work in progress would trip that,
+    which would make the test noise rather than a signal.
+    """
     result = subprocess.run(
-        ["git", "status", "--porcelain"], capture_output=True, text=True, check=True
+        ["git", "status", "--porcelain", "--untracked-files=all"],
+        capture_output=True,
+        text=True,
+        check=True,
     )
-    assert result.stdout.strip() == ""
+    offending = [
+        line for line in result.stdout.splitlines() if "data/" in line or "places.geojson" in line
+    ]
+    assert offending == []
 
 
 def test_writes_nothing_outside_the_out_dir(ingested):
