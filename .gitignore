@@ -41,3 +41,7 @@ scripts/*.json
 
 # uv-managed virtualenv
 .venv/
+
+# Coverage data
+.coverage
+.coverage.*
