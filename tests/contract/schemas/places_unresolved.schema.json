@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "timemap saved places needing coordinate backfill",
+  "type": "object",
+  "required": [
+    "type",
+    "features"
+  ],
+  "properties": {
+    "type": {
+      "const": "FeatureCollection"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "geometry",
+          "properties"
+        ],
+        "properties": {
+          "type": {
+            "const": "Feature"
+          },
+          "geometry": {
+            "type": "null"
+          },
+          "properties": {
+            "type": "object",
+            "required": [
+              "name",
+              "lists",
+              "needs_geocoding",
+              "geocode_reason"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "lists": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1
+              },
+              "source_files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "needs_geocoding": {
+                "const": true
+              },
+              "geocode_reason": {
+                "type": "string",
+                "minLength": 1
+              },
+              "feature_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "identity_key": {
+                "type": "string"
+              },
+              "outside_region": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
