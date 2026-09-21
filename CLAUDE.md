@@ -70,3 +70,33 @@ Specs should be reviewed by ai-writing-auditor before they're considered done.
 - Never commit GTFS zips, OSM extracts, OTP graphs, or personal Takeout
   exports — all are gitignored. Scripts should download/derive them.
 - Personal saved-places data is private: anything under `data/` stays local.
+
+## Sibling project and shared-core intent
+
+`~/personal/council_access_nyc` — local path only; that repo has no git remote
+configured. Same owner, a static site about NYC City Council hearings, and it is
+a written plan for this repo's pipeline shape run against live public sources,
+so it is where the hard cases are already described: HTTP 200 responses carrying
+error bodies, publisher "updated" dates that contradict the rows, and a hard
+commitment to no origin server that is forced by missing CORS headers upstream
+rather than chosen. A core both projects sit on is a someday goal, not a plan.
+`docs/shared-core-notes.md` holds the evidence, the candidate seams and the open
+questions; nothing in it is approved architecture.
+
+**Do not design the core, a plugin contract, or a shared interface.** Do not
+generalise `region_bbox` into a jurisdiction abstraction. Not adopting pluggy,
+entry points, or an ABC registry is a decision rather than an omission — adding
+one to be helpful is reopening it. Keep `TakeoutError`, `feature_id`,
+`list_name`, `Saved/` and the other Google-shaped names: they mark where the
+domain leaks in, and neutral names erase that. Code taken from
+council_access_nyc is copied verbatim with a comment naming its source file.
+
+When you inline a Takeout-specific or NYC-specific value in otherwise generic
+code (`DEFAULT_BBOX` in `cli.py` is one), mark it `# SEAM: <what varies>` at the
+same time as the line. None exist yet, so an empty `grep -rn 'SEAM:'` means
+nobody has marked one — not that the code has no seams.
+
+Append one dated line to `docs/OBSERVATIONS.md` (a new directory here) when a
+source or a test surprises you, when you measure a number worth citing later,
+and when you copy something to or from council_access_nyc — including when you
+try and it does not fit. The format is in that file's header.
