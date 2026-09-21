@@ -8,3 +8,8 @@
 *.tif binary
 *.tiff binary
 *.zip binary
+
+# Test fixtures encode specific byte sequences -- CRLF endings, BOMs, UTF-16.
+# Normalising them would make the encoding tests pass vacuously on a fresh
+# clone, testing nothing. Store them exactly as authored.
+tests/fixtures/** -text

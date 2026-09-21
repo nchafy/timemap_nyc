@@ -1,0 +1,48 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-73.9772, 40.75282]
+      },
+      "properties": {
+        "date": "2026-01-02T03:04:05Z",
+        "google_maps_url": "http://maps.google.com/?cid=1234567890123456789",
+        "location": {
+          "address": "1 Fictional Plaza, New York, NY 10001, USA",
+          "country_code": "US",
+          "name": "Fictional Landmark"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [2.2945, 48.8584]
+      },
+      "properties": {
+        "date": "2026-02-03T04:05:06Z",
+        "google_maps_url": "http://maps.google.com/?cid=9876543210987654321",
+        "location": {
+          "address": "5 Rue Imaginaire, 75007 Paris, France",
+          "country_code": "FR",
+          "name": "Distant Tower"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0, 0]
+      },
+      "properties": {
+        "date": "2026-03-04T05:06:07Z",
+        "google_maps_url": "http://maps.google.com/?q=7+Unknown+Street,+Nowhere,+NY&ftid=0x7777777777777777:0x8888888888888888"
+      }
+    }
+  ]
+}
