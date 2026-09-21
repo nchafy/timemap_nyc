@@ -11,7 +11,6 @@ import json
 import pathlib
 import random
 import re
-import urllib.parse as up
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parent
@@ -32,6 +31,7 @@ def nyc_lists() -> set[str]:
     if NYC_LISTS_FILE.exists():
         return set(json.loads(NYC_LISTS_FILE.read_text(encoding="utf-8")))
     return set()
+
 
 SAMPLE_SIZE = 60
 SEED = 20260803  # fixed so the sample is reproducible across runs
@@ -110,9 +110,7 @@ def main() -> None:
         nyc = [p for p in places if any(lst in allow for lst in p["lists"])]
     else:
         nyc = [
-            p
-            for p in places
-            if any(h in lst.lower() for lst in p["lists"] for h in NYC_LIST_HINTS)
+            p for p in places if any(h in lst.lower() for lst in p["lists"] for h in NYC_LIST_HINTS)
         ]
 
     rng = random.Random(SEED)

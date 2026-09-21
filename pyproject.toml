@@ -1,0 +1,37 @@
+[project]
+name = "timemap"
+version = "0.1.0"
+description = "NYC transit isochrone map over Google Maps saved places"
+requires-python = ">=3.12"
+# The ingest pipeline is deliberately stdlib-only: csv, json, urllib.parse,
+# pathlib. Geocoding (which needs an HTTP client) is a separate concern.
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-cov>=5", "jsonschema>=4", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/timemap"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers", "--strict-config", "-ra"]
+filterwarnings = ["error"]
+markers = [
+    "real_snapshot: needs the owner's private Takeout export; skipped unless TIMEMAP_TAKEOUT_DIR is set",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PTH", "RET", "ARG", "TID", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ARG"]
+"scripts/**" = ["ARG", "PTH", "T201"]

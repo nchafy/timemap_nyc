@@ -38,3 +38,10 @@ dist/
 # Script outputs derived from the private Takeout export (place names, coords).
 # The scripts themselves are committed; their data is not.
 scripts/*.json
+
+# uv-managed virtualenv
+.venv/
+
+# Coverage data
+.coverage
+.coverage.*
