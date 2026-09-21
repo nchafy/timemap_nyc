@@ -25,11 +25,40 @@ current GTFS schedules instead of a precomputed database.
 See [isochrone-project-outline.md](isochrone-project-outline.md) for the full
 plan, open questions, and references.
 
+## Importing saved places
+
+Export **"Saved"** and **"Maps (your places)"** from
+[Google Takeout](https://takeout.google.com), then unzip both into
+`data/takeout/` (gitignored — personal data stays local):
+
+```bash
+python3 -c "import zipfile,sys; zipfile.ZipFile(sys.argv[1]).extractall('data/takeout')" ~/Downloads/takeout-*.zip
+uv run timemap-places --takeout-dir data/takeout --out-dir data/places
+```
+
+Use Python's `zipfile` rather than `unzip`: `unzip` mangles non-ASCII list
+filenames and aborts with a misleading "disk full" error.
+
+Three files are written to `data/places/`:
+
+| File | Contents |
+|---|---|
+| `places.geojson` | Places with coordinates, ready for MapLibre |
+| `places.unresolved.geojson` | Places needing coordinates (`geometry: null`) |
+| `places.report.json` | Counts, duplicates merged, backlog by reason |
+
+**Takeout does not export coordinates for custom-list places** — only names and
+Google Maps URLs, and the URLs carry a feature id rather than a lat/lon. So most
+places land in `places.unresolved.geojson` pending a geocoding pass. See
+[scripts/README.md](scripts/README.md) for the geocoder comparison that measured
+this.
+
 ## Status
 
-Planning / pre-M0. Milestones:
+M0 in progress. Milestones:
 
-- [ ] **M0** — Takeout import → GeoJSON → pins on a MapLibre map
+- [x] Takeout import → GeoJSON + backlog report
+- [ ] **M0** — geocode the backlog → pins on a MapLibre map
 - [ ] **M1** — OTP2 running with MTA subway GTFS; first isochrone rendered
 - [ ] **M2** — Views 1 & 2 (origin input, departure time, bands, pin filter)
 - [ ] **M3** — View 3 (travel-time rasters, equal-time region)
